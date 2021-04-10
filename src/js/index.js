@@ -1,4 +1,6 @@
-"use strict";
+import '../css/index.css';
+
+// "use strict";
 
 class Queue {
     constructor() {

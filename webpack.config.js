@@ -1,16 +1,36 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const isDev = process.env.NODE_ENV === 'development';
-const isProd = !isDev;
-
-const filename = (ext) => isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
-    mode: 'development',
-    entry: './js/index.js',
+    entry: {
+        main: './js/index.js'
+    },
     output: {
         filename: `./js/${filename('js')}`,
         path: path.resolve(__dirname, 'app')
+    },
+    devServer: {
+        historyApiFallback: true,
+        contentBase: path.join(__dirname, 'app'),
+        compress: true,
+        open: true,
+        hot: true,
+        port: 9000,
+      },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: `./css/${filename('css')}`,
+        })
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+              },
+        ]
     }
+
 };
